@@ -6,6 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/bootstrap.min.css" rel="stylesheet"> 
   <title>Cervecería Nacional -  Productos</title>
+
+<style>
+  /* Fondo blanco translúcido para las secciones de contenido */
+  .translucent-section {
+    background-color: rgba(255, 255, 255, 0.8); /* Blanco translúcido */
+    padding: 20px;
+    border-radius: 8px;
+  }
+</style>
   <style>
     body {
       background-size: cover;
@@ -79,39 +88,145 @@
                 <a class="nav-link" href="contacto.html">Contáctanos</a>
               </li>
             </ul>
-
-            <!--Dropdown para iniciar sesion-->
-            <div class="dropdown">
-              <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="img/button.png" alt="Icono">
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                <li>
-                  <form class="px-4 py-3">
-                    <div class="mb-3">
-                      <label for="email" class="form-label">Correo electrónico</label>
-                      <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
-                    </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Contraseña</label>
-                      <input type="password" class="form-control" id="password" placeholder="Contraseña">
-                    </div>
-                    <div class="mb-3 form-check">
-                      <input type="checkbox" class="form-check-input" id="rememberMe">
-                      <label class="form-check-label" for="rememberMe">Recuérdame</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
-                  </form>
-                </li>
-              </ul>
-            </div>
+            <button class="btn btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <img src="img/button.png" alt="Icono">
+            </button>
           </div>
         </div>
       </nav>
     </h1>
   </div>
+  <!-- Ventana para iniciar sesion-->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico</label>
+              <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" placeholder="Contraseña">
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">Recuérdame</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<div class="container my-5">
+  <!-- Sección de Productos -->
+  <section class="my-5 translucent-section">
+    <h2 class="text-center">Nuestras Cervezas</h2>
+    <div class="row">
+      <!-- Producto 1 -->
+      <div class="col-md-4 text-center mb-4">
+        <div class="card shadow-sm">
+          <img src="img/cerveza1.jpg" class="card-img-top" alt="Cerveza 1">
+          <div class="card-body">
+            <h5 class="card-title">Cerveza Clásica</h5>
+            <p class="card-text">Cerveza artesanal con notas de malta y un toque refrescante.</p>
+            <select class="form-select mb-3" id="sizeCervezaClasica" aria-label="Seleccionar tamaño de barril">
+              <option value="30L">Barril de 30 litros</option>
+              <option value="50L">Barril de 50 litros</option>
+            </select>
+            <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Clásica', 'sizeCervezaClasica')">Agregar a la Orden</button>
+          </div>
+        </div>
+      </div>
+      <!-- Producto 2 -->
+      <div class="col-md-4 text-center mb-4">
+        <div class="card shadow-sm">
+          <img src="img/cerveza2.jpg" class="card-img-top" alt="Cerveza 2">
+          <div class="card-body">
+            <h5 class="card-title">Cerveza Rubia</h5>
+            <p class="card-text">Sabor suave y refrescante, perfecta para cualquier ocasión.</p>
+            <select class="form-select mb-3" id="sizeCervezaRubia" aria-label="Seleccionar tamaño de barril">
+              <option value="30L">Barril de 30 litros</option>
+              <option value="50L">Barril de 50 litros</option>
+            </select>
+            <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Rubia', 'sizeCervezaRubia')">Agregar a la Orden</button>
+          </div>
+        </div>
+      </div>
+      <!-- Producto 3 -->
+      <div class="col-md-4 text-center mb-4">
+        <div class="card shadow-sm">
+          <img src="img/cerveza3.jpg" class="card-img-top" alt="Cerveza 3">
+          <div class="card-body">
+            <h5 class="card-title">Cerveza Negra</h5>
+            <p class="card-text">Intensa y con cuerpo, una cerveza para los amantes de sabores fuertes.</p>
+            <select class="form-select mb-3" id="sizeCervezaNegra" aria-label="Seleccionar tamaño de barril">
+              <option value="30L">Barril de 30 litros</option>
+              <option value="50L">Barril de 50 litros</option>
+            </select>
+            <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Negra', 'sizeCervezaNegra')">Agregar a la Orden</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de Orden de Compra -->
+  <section class="my-5 translucent-section p-4">
+    <h3 class="text-center">Orden de Compra</h3>
+    <ul id="orderList" class="list-group mb-3"></ul>
+    <div class="d-flex">
+      <button class="btn btn-warning w-50 me-1" onclick="clearOrder()">Vaciar Orden</button>
+      <button class="btn btn-success w-50 ms-1" onclick="checkout()">Finalizar Compra</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Función para agregar productos a la orden de compra con el tamaño de barril seleccionado
+  function addToOrder(productName, sizeId) {
+    const sizeSelect = document.getElementById(sizeId);
+    const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
+    const orderList = document.getElementById('orderList');
+
+    // Crear el elemento de lista
+    const listItem = document.createElement('li');
+    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+    listItem.textContent = productName + ' - ' + selectedSize;
+
+    // Botón de eliminar
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-danger btn-sm';
+    deleteButton.textContent = 'Eliminar';
+    deleteButton.onclick = function() {
+      orderList.removeChild(listItem);
+    };
+
+    // Agregar botón de eliminar al elemento de lista
+    listItem.appendChild(deleteButton);
+    orderList.appendChild(listItem);
+  }
+
+  // Función para vaciar la orden de compra completa
+  function clearOrder() {
+    document.getElementById('orderList').innerHTML = ''; // Vaciar la lista de orden
+  }
+
+  // Función para finalizar la compra
+  function checkout() {
+    alert("Tu orden ha sido procesada. Gracias por tu compra!");
+    clearOrder(); // Llama a la función de vaciar orden
+  }
+</script>
 </body>
 </html>

@@ -6,6 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/bootstrap.min.css" rel="stylesheet"> 
   <title>Cervecería Nacional -  Inicio</title>
+
+<style>
+  /* Fondo blanco translúcido para las secciones de contenido */
+  .translucent-section {
+    background-color: rgba(255, 255, 255, 0.8); /* Blanco translúcido */
+    padding: 20px;
+    border-radius: 8px;
+  }
+</style>
   <style>
     body {
       background-size: cover;
@@ -118,4 +127,76 @@
 
   <script src="js/bootstrap.min.js"></script>
 </body>
+
+  <div class="container my-5">
+    <!-- Galería de Eventos -->
+    <section class="my-5 translucent-section">
+      <h2 class="text-center">Galería de Eventos</h2>
+      <p class="text-center">Descubre algunos de los eventos y experiencias especiales que hemos compartido con nuestros clientes.</p>
+      <div class="row">
+        <div class="col-md-4">
+          <img src="img/evento_degustacion.png" class="img-fluid rounded mb-3" alt="Evento 1">
+          <h5 class="text-center">Evento de Degustación</h5>
+          <p class="text-center">Una noche inolvidable con nuestros clientes.</p>
+        </div>
+        <div class="col-md-4">
+          <img src="img/visita_fabrica.png" class="img-fluid rounded mb-3" alt="Evento 2">
+          <h5 class="text-center">Visita a la Fábrica</h5>
+          <p class="text-center">Nuestros visitantes aprendiendo sobre el proceso de elaboración.</p>
+        </div>
+        <div class="col-md-4">
+          <img src="img/lanzamiento_cerveza.png" class="img-fluid rounded mb-3" alt="Evento 3">
+          <h5 class="text-center">Lanzamiento de Nueva Cerveza</h5>
+          <p class="text-center">Presentación de nuestro nuevo sabor.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Testimonios -->
+    <section class="my-5 translucent-section">
+      <h2 class="text-center">Lo que dicen nuestros clientes</h2>
+      <div id="testimonios" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <blockquote class="blockquote text-center">
+              <p class="mb-3">"La mejor cerveza artesanal que he probado, ¡increíble sabor y calidad!"</p>
+              <footer class="blockquote-footer">Cliente satisfecho</footer>
+            </blockquote>
+          </div>
+          <div class="carousel-item">
+            <blockquote class="blockquote text-center">
+              <p class="mb-3">"La visita a la fábrica fue una experiencia increíble, ¡muy recomendada!"</p>
+              <footer class="blockquote-footer">María G.</footer>
+            </blockquote>
+          </div>
+          <div class="carousel-item">
+            <blockquote class="blockquote text-center">
+              <p class="mb-3">"Siempre disfruto de los eventos, excelente ambiente y buena cerveza."</p>
+              <footer class="blockquote-footer">Luis R.</footer>
+            </blockquote>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonios" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonios" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Llamado a la Acción para el Boletín -->
+    <section class="my-5 text-center translucent-section">
+      <h2>Suscríbete a Nuestro Boletín</h2>
+      <p>Recibe noticias, promociones exclusivas y mantente informado sobre nuestros próximos eventos.</p>
+      <form class="w-50 mx-auto">
+        <div class="input-group">
+          <input type="email" class="form-control" placeholder="Ingresa tu correo" aria-label="Ingresa tu correo">
+          <button class="btn btn-primary" type="submit">Suscribirse</button>
+        </div>
+      </form>
+    </section>
+  </div>
 </html>
