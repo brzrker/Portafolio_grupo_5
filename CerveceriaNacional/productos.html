@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap.min.css" rel="stylesheet"> 
+  <title>Cervecería Nacional -  Productos</title>
+  <style>
+    body {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #f4e1a6;
+      background-image: url('img/fondo.jpg') ; 
+    }
+    body::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Cambia la opacidad aquí: 0.5 es 50% */
+      z-index: -1; /* Se asegura de que la capa esté detrás del contenido */
+    }
+
+    .banner{
+      background-color: rgb(255, 166, 0); /* Color de fondo naranja */
+      font-family: fantasy;
+      font-size: 25px;
+      height: auto;
+      padding: 5px; /* Añadir padding para asegurar que se vea bien */
+    }
+    .navbar-custom {
+      background-color: rgb(255, 166, 0); /* Mismo color de fondo */
+    }
+    .navbar .btn-custom {
+      background-color: transparent; /* Fondo transparente para mostrar solo la imagen */
+      border: none;
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    .navbar .btn-custom img {
+      max-width: 50px; /* Tamaño ajustable de la imagen */
+      height: auto;
+    }
+
+    .navbar .btn-custom:hover {
+      background-color: transparent; /* Mantener transparente al hacer hover */
+    }
+  </style>
+</head>
+<body>
+  <div style="height: 100px;">
+    <h1 class="banner">
+      <nav class="navbar navbar-expand-lg navbar-custom w-100 ">
+        <a href="index.html">
+          <img src="img/Logo.png" class="float-start" alt="Logo" style="max-width: 90px;">
+        </a>
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav w-100 d-flex justify-content-around">
+              <li class="nav-item flex-grow-1 text-center">
+                <a class="nav-link" href="index.html">Inicio</a>
+              </li>
+              <li class="nav-item flex-grow-1 text-center">
+                <a class="nav-link active" aria-current="page"  href="productos.html">Productos</a>
+              </li>
+              <li class="nav-item flex-grow-1 text-center">
+                <a class="nav-link" href="nosotros.html">Conócenos</a>
+              </li>
+              <li class="nav-item flex-grow-1 text-center">
+                <a class="nav-link" href="contacto.html">Contáctanos</a>
+              </li>
+            </ul>
+
+            <!--Dropdown para iniciar sesion-->
+            <div class="dropdown">
+              <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="img/button.png" alt="Icono">
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <form class="px-4 py-3">
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Correo electrónico</label>
+                      <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
+                    </div>
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input type="password" class="form-control" id="password" placeholder="Contraseña">
+                    </div>
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="rememberMe">
+                      <label class="form-check-label" for="rememberMe">Recuérdame</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </h1>
+  </div>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
