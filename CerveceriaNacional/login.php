@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 $error = "Contraseña incorrecta.";
             }
+        } else {
+            $error = "Correo electrónico no registrado.";
         }
         $query->close();
     }
@@ -59,7 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="contraseña" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-2">Iniciar Sesión</button>
+                    <a href="index.php" class="btn btn-secondary w-100">Volver al Inicio</a>
                 </form>
             </div>
         </div>

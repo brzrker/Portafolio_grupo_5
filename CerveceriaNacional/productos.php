@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexion.php"); // Conexión a la base de datos
+include("conexion.php");
 
 // Verifica si la sesión está activa
 if (!isset($_SESSION['id_usuario'])) {
@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_usuario'])) {
 }
 
 // Obtener el nombre del usuario de la sesión
-$nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor predeterminado
+$nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,19 +47,6 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
         .navbar-custom {
             background-color: rgb(255, 166, 0);
         }
-        .navbar .btn-custom {
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            border-radius: 10px;
-        }
-        .navbar .btn-custom img {
-            max-width: 50px;
-            height: auto;
-        }
-        .navbar .btn-custom:hover {
-            background-color: transparent;
-        }
         .translucent-section {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
@@ -75,41 +62,23 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
                 <img src="img/Logo.png" class="float-start" alt="Logo" style="max-width: 90px;">
             </a>
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav w-100 d-flex justify-content-around">
-                        <li class="nav-item flex-grow-1 text-center">
-                            <a class="nav-link" href="index.php">Inicio</a>
-                        </li>
-                        <li class="nav-item flex-grow-1 text-center">
-                            <a class="nav-link active" aria-current="page" href="productos.php">Productos</a>
-                        </li>
-                        <li class="nav-item flex-grow-1 text-center">
-                            <a class="nav-link" href="nosotros.php">Conócenos</a>
-                        </li>
-                        <li class="nav-item flex-grow-1 text-center">
-                            <a class="nav-link" href="contacto.php">Contáctanos</a>
-                        </li>
-                    </ul>
-                    <?php if (isset($_SESSION['id_usuario'])): ?>
-                        <span class="navbar-text">
-                            <?= htmlspecialchars($nombreUsuario); ?> |
-                            <a href="perfil.php">Perfil</a> |
-                            <a href="logout.php">Cerrar sesión</a>
-                        </span>
-                    <?php endif; ?>
-                </div>
+                <ul class="navbar-nav w-100 d-flex justify-content-around">
+                    <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="productos.php">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nosotros.php">Conócenos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacto.php">Contáctanos</a></li>
+                </ul>
+                <?php if (isset($_SESSION['id_usuario'])): ?>
+                    <span class="navbar-text">
+                        <?= htmlspecialchars($nombreUsuario); ?> |
+                        <a href="perfil.php">Perfil</a> |
+                        <a href="logout.php">Cerrar sesión</a>
+                    </span>
+                <?php endif; ?>
             </div>
         </nav>
     </h1>
 </div>
-
-<script src="js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 <div class="container my-5">
     <section class="my-5 translucent-section">
@@ -177,6 +146,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
     order.push({ name: productName, size: selectedSize });
     updateOrderList();
   }
+
   function updateOrderList() {
     const orderList = document.getElementById('orderList');
     orderList.innerHTML = '';
@@ -195,17 +165,38 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
       orderList.appendChild(listItem);
     });
   }
+
   function clearOrder() {
     order = [];
     updateOrderList();
   }
+
   function checkout() {
     if (order.length === 0) {
       alert('Tu orden está vacía.');
-    } else {
-      alert('Tu orden ha sido procesada. Gracias por tu compra!');
-      clearOrder();
+      return;
     }
+
+    const userId = <?= json_encode($_SESSION['id_usuario']); ?>;
+
+    fetch('registrar_orden.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, order })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Orden registrada correctamente. ¡Gracias por tu compra!');
+          clearOrder();
+        } else {
+          alert('Error al registrar la orden: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al procesar tu orden.');
+      });
   }
 </script>
 </body>
