@@ -96,7 +96,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
                 <a class="nav-link active" href="contacto.php">Contáctanos</a>
               </li>
             </ul>
-            <?php if (isset($_SESSION['id_usuario'])): ?>
+            <?php if (isset($_SESSION['UsuarioID'])): ?>
               <span class="navbar-text">
                 <?= htmlspecialchars($nombreUsuario); ?> |
                 <a href="perfil.php">Perfil</a> |
@@ -130,7 +130,8 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
               <label for="password" class="form-label">Contraseña</label>
               <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
             </div>
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+            <a href="registro.php" class="btn btn-success w-100">Regístrate 🍺</a>
           </form>
         </div>
       </div>
@@ -141,6 +142,18 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 <div class="container my-5">
+    <?php if (isset($_GET['status'])): ?>
+      <?php if ($_GET['status'] === 'success'): ?>
+        <div class="alert alert-success text-center">
+          Tu mensaje ha sido enviado con éxito. Gracias por contactarnos.
+        </div>
+      <?php elseif ($_GET['status'] === 'error'): ?>
+        <div class="alert alert-danger text-center">
+          Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.
+        </div>
+      <?php endif; ?>
+    <?php endif; ?>
+
   <div class="row">
     <!-- Formulario de Contacto -->
     <div class="col-md-6 translucent-section p-4">

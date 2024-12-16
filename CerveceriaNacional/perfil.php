@@ -2,7 +2,7 @@
 session_start();
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['UsuarioID'])) {
     header("Location: login.php");
     exit();
 }
@@ -11,23 +11,33 @@ if (!isset($_SESSION['id_usuario'])) {
 include 'conexion.php';
 
 // Obtener información del usuario
-$id_usuario = $_SESSION['id_usuario'];
-$query = "SELECT nombre, correo, tipo_usuario, fecha_creacion FROM Usuarios WHERE id_usuario = ?";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("i", $id_usuario);
-$stmt->execute();
-$resultado = $stmt->get_result();
-$usuario = $resultado->fetch_assoc();
+$UsuarioID = $_SESSION['UsuarioID'];
+$sql = "
+    SELECT u.Nombre, u.Correo, r.NombreRol 
+    FROM Usuarios u
+    LEFT JOIN Roles r ON u.RolID = r.RolID
+    WHERE u.UsuarioID = ?";
+$params = array($UsuarioID);
+$stmt = sqlsrv_query($conexion, $sql,$params);
+if ($stmt === false) {
+    die(print_r(sqlsrv_errors(), true)); // Muestra errores en caso de problemas
+}
 
-// Si no se encuentra el usuario, cerrar sesión por seguridad
-if (!$usuario) {
+// Extraer la información del usuario
+if (sqlsrv_fetch($stmt)) {
+    $usuario = [
+        'Nombre' => sqlsrv_get_field($stmt, 0),
+        'Correo' => sqlsrv_get_field($stmt, 1),
+        'NombreRol' => sqlsrv_get_field($stmt, 2),
+    ];
+} else {
+    // Si no se encuentra el usuario, cerrar sesión por seguridad
     session_destroy();
     header("Location: login.php");
     exit();
 }
 
-// Formatear la fecha
-$fecha_creacion = date("d-m-Y", strtotime($usuario['fecha_creacion']));
+
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +123,7 @@ $fecha_creacion = date("d-m-Y", strtotime($usuario['fecha_creacion']));
                             </li>
                             <li class="nav-item flex-grow-1 text-center">
                                 <a class="nav-link active" href="perfil.php">
-                                    <?php echo htmlspecialchars($usuario['nombre']); ?>
+                                    <?php echo htmlspecialchars($usuario['Nombre']); ?>
                                 </a>
                             </li>
                         </ul>
@@ -132,19 +142,15 @@ $fecha_creacion = date("d-m-Y", strtotime($usuario['fecha_creacion']));
             <table class="table table-bordered">
                 <tr>
                     <th>Nombre</th>
-                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['Nombre']); ?></td>
                 </tr>
                 <tr>
                     <th>Correo</th>
-                    <td><?php echo htmlspecialchars($usuario['correo']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['Correo']); ?></td>
                 </tr>
                 <tr>
                     <th>Tipo de Usuario</th>
-                    <td><?php echo htmlspecialchars($usuario['tipo_usuario']); ?></td>
-                </tr>
-                <tr>
-                    <th>Miembro desde</th>
-                    <td><?php echo $fecha_creacion; ?></td>
+                    <td><?php echo htmlspecialchars($usuario['NombreRol']); ?></td>
                 </tr>
             </table>
             <div class="text-center">

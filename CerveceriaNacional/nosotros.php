@@ -95,7 +95,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
                 <a class="nav-link" href="contacto.php">Contáctanos</a>
               </li>
             </ul>
-            <?php if (isset($_SESSION['id_usuario'])): ?>
+            <?php if (isset($_SESSION['UsuarioID'])): ?>
               <span class="navbar-text">
                 <?= htmlspecialchars($nombreUsuario); ?> |
                 <a href="perfil.php">Perfil</a> |
@@ -130,7 +130,8 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario'; // Usa 'Usuario' como valor p
               <label for="password" class="form-label">Contraseña</label>
               <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
             </div>
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+            <a href="registro.php" class="btn btn-success w-100">Regístrate 🍺</a>
           </form>
         </div>
       </div>

@@ -1,19 +1,17 @@
 <?php
-// Parámetros de conexión
-$servidor = "localhost";
-$usuario = "root";
-$password = "";
-$base_datos = "CerveceriaNacional";
 
-// Crear conexión
-$conexion = new mysqli($servidor, $usuario, $password, $base_datos);
+$serverName = " 35.232.8.173,1433"; // Reemplaza con la IP de tu servidor SQL Server
+$connectionOptions = [
+    "Database" => "cerveceria",
+    "Uid" => "sqlserver",
+    "PWD" => "1q2w3e4r",
+    "CharacterSet" => "UTF-8"
+];
+// Establecer conexión
+$conexion = sqlsrv_connect($serverName, $connectionOptions);
 
 // Verificar conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión: " . $conexion->connect_error);
+if ($conexion === false) {
+    die("Error al conectar con la base de datos: " . print_r(sqlsrv_errors(), true));
 }
-
-// Opcional: Configurar el juego de caracteres
-$conexion->set_charset("utf8");
-
 ?>

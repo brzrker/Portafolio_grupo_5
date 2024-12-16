@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'conexion.php';
+require_once 'conexion.php'; // Conexión usando sqlsrv_connect
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = $_POST['correo'] ?? '';
@@ -9,21 +9,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($correo) || empty($contraseña)) {
         $error = "Por favor, complete todos los campos.";
     } else {
-        // Preparar la consulta para evitar inyección SQL
-        $query = $conexion->prepare("SELECT id_usuario, nombre, contraseña, fecha_creacion FROM Usuarios WHERE correo = ?");
-        $query->bind_param("s", $correo);
-        $query->execute();
-        $resultado = $query->get_result();
+        // Preparar consulta para obtener usuario
+        $sql = "SELECT UsuarioID, Nombre, Contraseña FROM Usuarios WHERE Correo = ?";
+        $params = array($correo);
 
-        if ($resultado->num_rows > 0) {
-            $usuario = $resultado->fetch_assoc();
-            // Verificar la contraseña
-            $hashedPassword = hash('sha256', $contraseña); // Cifrar la contraseña ingresada
-            if ($hashedPassword === $usuario['contraseña']) {
-                $_SESSION['id_usuario'] = $usuario['id_usuario'];
-                $_SESSION['nombre'] = $usuario['nombre'];
-                $_SESSION['fecha_creacion'] = $usuario['fecha_creacion'];
-                header("Location: index.php");
+        $stmt = sqlsrv_query($conexion, $sql, $params);
+
+        if ($stmt === false) {
+            die(print_r(sqlsrv_errors(), true)); // Muestra errores en caso de problemas
+        }
+
+        // Verificar si existe un registro
+        if (sqlsrv_fetch($stmt)) {
+            $usuarioID = sqlsrv_get_field($stmt, 0); // UsuarioID
+            $nombre = sqlsrv_get_field($stmt, 1); // Nombre
+            $hashedPassword = sqlsrv_get_field($stmt, 2); // Contraseña cifrada
+
+            // Comparar la contraseña ingresada con la almacenada
+            if (password_verify($contraseña, $hashedPassword)) {
+                // Iniciar sesión
+                $_SESSION['UsuarioID'] = $usuarioID;
+                $_SESSION['nombre'] = $nombre;
+                header("Location: index.php"); // Redirigir al inicio
                 exit();
             } else {
                 $error = "Contraseña incorrecta.";
@@ -31,7 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $error = "Correo electrónico no registrado.";
         }
-        $query->close();
+
+        // Liberar recursos del statement
+        sqlsrv_free_stmt($stmt);
     }
 }
 ?>
@@ -62,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mb-2">Iniciar Sesión</button>
-                    <a href="index.php" class="btn btn-secondary w-100">Volver al Inicio</a>
+                    <a href="index.php" class="btn btn-danger w-100">Regresar al Inicio</a>
                 </form>
             </div>
         </div>

@@ -85,7 +85,7 @@ require_once 'conexion.php';
                 <a class="nav-link" href="contacto.php">Contáctanos</a>
               </li>
             </ul>
-            <?php if (isset($_SESSION['UsuarioID'])): ?>
+            <?php if (isset($_SESSION['id_usuario'])): ?>
               <span class="navbar-text">
                 Bienvenido, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario'); ?> |
                 <a href="perfil.php">Perfil</a> |
@@ -121,13 +121,11 @@ require_once 'conexion.php';
               <input type="password" class="form-control" name="contraseña" id="password" placeholder="Contraseña" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
-            <a href="registro.php" class="btn btn-success w-100">Regístrate 🍺</a>
           </form>
         </div>
       </div>
     </div>
   </div>
-
   <div class="container my-5">
     <!-- Galería de Eventos -->
     <section class="my-5 translucent-section">
@@ -191,9 +189,9 @@ require_once 'conexion.php';
     <section class="my-5 text-center translucent-section">
       <h2>Suscríbete a Nuestro Boletín</h2>
       <p>Recibe noticias, promociones exclusivas y mantente informado sobre nuestros próximos eventos.</p>
-      <form class="w-50 mx-auto" action="registro_boletin.php" method="POST">
+      <form class="w-50 mx-auto">
         <div class="input-group">
-          <input type="email" name="correo" class="form-control" placeholder="Ingresa tu correo" aria-label="Ingresa tu correo" required>
+          <input type="email" class="form-control" placeholder="Ingresa tu correo" aria-label="Ingresa tu correo">
           <button class="btn btn-primary" type="submit">Suscribirse</button>
         </div>
       </form>

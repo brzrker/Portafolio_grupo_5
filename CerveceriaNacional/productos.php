@@ -3,13 +3,21 @@ session_start();
 include("conexion.php");
 
 // Verifica si la sesión está activa
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['UsuarioID'])) {
     echo "<script>alert('Debes iniciar sesión para acceder a los productos.'); window.location.href='login.php';</script>";
     exit();
 }
 
 // Obtener el nombre del usuario de la sesión
 $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
+
+// Consulta para obtener los productos
+$sqlProductos = "SELECT ProductoID, Nombre, Tamano, PrecioVenta FROM Productos";
+$stmtProductos = sqlsrv_query($conexion, $sqlProductos);
+
+if ($stmtProductos === false) {
+    die("Error al cargar los productos: " . print_r(sqlsrv_errors(), true));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +76,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
                     <li class="nav-item"><a class="nav-link" href="nosotros.php">Conócenos</a></li>
                     <li class="nav-item"><a class="nav-link" href="contacto.php">Contáctanos</a></li>
                 </ul>
-                <?php if (isset($_SESSION['id_usuario'])): ?>
+                <?php if (isset($_SESSION['UsuarioID'])): ?>
                     <span class="navbar-text">
                         <?= htmlspecialchars($nombreUsuario); ?> |
                         <a href="perfil.php">Perfil</a> |
@@ -84,48 +92,19 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
     <section class="my-5 translucent-section">
         <h2 class="text-center">Nuestras Cervezas</h2>
         <div class="row">
-            <div class="col-md-4 text-center mb-4">
-                <div class="card shadow-sm">
-                    <img src="img/cerveza1.jpg" class="card-img-top" alt="Cerveza 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Cerveza Clásica</h5>
-                        <p class="card-text">Cerveza artesanal con notas de malta y un toque refrescante.</p>
-                        <select class="form-select mb-3" id="sizeCervezaClasica">
-                            <option value="30L">Barril de 30 litros</option>
-                            <option value="50L">Barril de 50 litros</option>
-                        </select>
-                        <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Clásica', 'sizeCervezaClasica')">Agregar a la Orden</button>
+            <?php while ($producto = sqlsrv_fetch_array($stmtProductos, SQLSRV_FETCH_ASSOC)): ?>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="card shadow-sm">
+                        <img src="img/placeholder.jpg" class="card-img-top" alt="<?= htmlspecialchars($producto['Nombre']); ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($producto['Nombre']); ?></h5>
+                            <p class="card-text">Tamaño: <?= htmlspecialchars($producto['Tamano']); ?></p>
+                            <p class="card-text">Precio: $<?= number_format($producto['PrecioVenta'], 2); ?></p>
+                            <button class="btn btn-primary w-100" onclick="addToOrder(<?= $producto['ProductoID']; ?>, '<?= htmlspecialchars($producto['Nombre']); ?>', <?= $producto['PrecioVenta']; ?>)">Agregar a la Orden</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 text-center mb-4">
-                <div class="card shadow-sm">
-                    <img src="img/cerveza2.jpg" class="card-img-top" alt="Cerveza 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Cerveza Rubia</h5>
-                        <p class="card-text">Sabor suave y refrescante, perfecta para cualquier ocasión.</p>
-                        <select class="form-select mb-3" id="sizeCervezaRubia">
-                            <option value="30L">Barril de 30 litros</option>
-                            <option value="50L">Barril de 50 litros</option>
-                        </select>
-                        <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Rubia', 'sizeCervezaRubia')">Agregar a la Orden</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-center mb-4">
-                <div class="card shadow-sm">
-                    <img src="img/cerveza3.jpg" class="card-img-top" alt="Cerveza 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Cerveza Negra</h5>
-                        <p class="card-text">Intensa y con cuerpo, una cerveza para los amantes de sabores fuertes.</p>
-                        <select class="form-select mb-3" id="sizeCervezaNegra">
-                            <option value="30L">Barril de 30 litros</option>
-                            <option value="50L">Barril de 50 litros</option>
-                        </select>
-                        <button class="btn btn-primary w-100" onclick="addToOrder('Cerveza Negra', 'sizeCervezaNegra')">Agregar a la Orden</button>
-                    </div>
-                </div>
-            </div>
+            <?php endwhile; ?>
         </div>
     </section>
     <section class="my-5 translucent-section p-4">
@@ -140,10 +119,8 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
 
 <script>
   let order = [];
-  function addToOrder(productName, sizeId) {
-    const sizeSelect = document.getElementById(sizeId);
-    const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
-    order.push({ name: productName, size: selectedSize });
+  function addToOrder(productId, productName, productPrice) {
+    order.push({ productId, name: productName, price: productPrice, quantity: 1 });
     updateOrderList();
   }
 
@@ -153,7 +130,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
     order.forEach((item, index) => {
       const listItem = document.createElement('li');
       listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-      listItem.textContent = `${item.name} - ${item.size}`;
+      listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x ${item.quantity}`;
       const deleteButton = document.createElement('button');
       deleteButton.className = 'btn btn-danger btn-sm';
       deleteButton.textContent = 'Eliminar';
@@ -177,7 +154,7 @@ $nombreUsuario = $_SESSION['nombre'] ?? 'Usuario';
       return;
     }
 
-    const userId = <?= json_encode($_SESSION['id_usuario']); ?>;
+    const userId = <?= json_encode($_SESSION['UsuarioID']); ?>;
 
     fetch('registrar_orden.php', {
       method: 'POST',
